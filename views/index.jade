@@ -1,5 +1,8 @@
 html
     body
-        h1 Github stuff
-        form
-            p!= title
+        h1 Find interesting github projects
+        form(method="get" action="/")
+            p Reference Project:
+                input(type="text" name="reponame")
+                input(type="submit" value="Find")
+        p
