@@ -1,0 +1,14 @@
+{
+  "name": "github-interest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Klaus Bayrhammer",
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^3.3.5",
+    "express": "^4.13.1",
+    "jade": "^1.11.0",
+    "unirest": "^0.4.2"
+  }
+}
