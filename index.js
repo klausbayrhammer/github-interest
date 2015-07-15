@@ -19,7 +19,6 @@ app.get('/', (req, res) => {
                     return new Promise(resolve => {
                         githubApiCall('https://api.github.com/users/' + user.login + '/starred', data => {
                             var repo_names = _.map(data.body, (repo) => repo.full_name);
-                            console.log(user.login);
                             resolve(repo_names);
                         });
                     });
@@ -27,8 +26,12 @@ app.get('/', (req, res) => {
             );
             Promise.all(promises).then((values) => {
                 var groupedRepoNames = _.countBy(_.flatten(values), v=>v);
-                console.log(groupedRepoNames);
-                res.render('index', {content: JSON.stringify(groupedRepoNames)});
+                var maxOccurence = _.max(groupedRepoNames);
+                var sortedOccurences = _.sortBy(_.map(groupedRepoNames, (vals, key) => {
+                    return {name: key , count : vals, percent : vals/maxOccurence*100};
+                }), 'count');
+                var firstOccurencePage = sortedOccurences.reverse().slice(0,20);
+                res.render('index', {content: firstOccurencePage});
             });
         });
     } else {
