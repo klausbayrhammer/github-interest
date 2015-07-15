@@ -2,7 +2,6 @@
 
 var express = require('express');
 var unirest = require('unirest');
-var async = require('async');
 const _ = require('underscore');
 
 var app = express();
