@@ -3,7 +3,7 @@
 var express = require('express');
 var unirest = require('unirest');
 const _ = require('underscore');
-const pagingLimit = 30;
+const pagingLimit = 60;
 const username = process.env.github_user;
 const password = process.env.github_pass;
 
