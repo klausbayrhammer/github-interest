@@ -52,12 +52,15 @@ function githubApiCall(res,reponame, url, callback) {
         .headers({'User-Agent': 'Unirest Node.js'})
         .auth({user: username, pass: password, sendImmediately: true})
         .end(data => {
-            if(data.status !== 200) {
+            if(data.status === 200) {
+                callback(data)
+            } else if(data.status === 403) {
+                console.log('Rate Limit Reached');
+                res.render('index', {error: 'Github Api Rate Limit Reached :(', searchterm: reponame})
+            } else {
                 console.log('Error Invoking API');
                 console.log(data);
                 res.render('index', {error: 'Error Invoking Api', searchterm: reponame})
-            } else {
-                callback(data)
             }
         });
 }
