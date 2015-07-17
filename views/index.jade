@@ -4,16 +4,23 @@ html
             href='//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css',
             rel='stylesheet'
         )
+        link(href='/css/github-interest.css' rel='stylesheet')
     body
-        h1 Find interesting github projects
-        form(method="get" action="/")
-            p Reference Project:
-                input(type="text" name="reponame")
-                input(type="submit" value="Find")
+        div(class="search")
+            div(class="search-area-component")
+                div(class="search-header")
+                    h1 Find similar github projects
+                div(class="serach-body")
+                    form(method="get" action="/")
+                        input(type="text" name="reponame" class="form-control input-lg serach-term" value="#{searchterm ? searchterm : 'e.g. twbs/bootstrap'}")
+                        input(type="submit" value="Find" class="btn btn-primary btn-lg search-btn")
+        if error
+            div(class="alert alert-danger")
+                span(class="glyphicon glyphicon-exclamation-sign" aria-hidden="true")
+                | #{error}
         if content
-            h1 Result
-            ul
-                each val in content
-                    div(class="progress progress-striped")
-                        div(class="progress-bar progress-bar-success" style="width:#{val.percent}%")
-                            a(href="https://github.com/#{val.name}" style="color:white") #{val.name} : #{val.count}
+            h1
+            each val in content
+                div(class="progress progress-striped")
+                    div(class="progress-bar progress-bar-result" style="width:#{val.percent}%")
+                        a(href="/?reponame=#{val.name}" style="color:white") #{val.name} : #{val.count}
