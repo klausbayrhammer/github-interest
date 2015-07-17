@@ -1,0 +1,1 @@
+web: node index.js --harmony_arrow_functions
