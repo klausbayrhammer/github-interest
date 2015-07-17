@@ -10,5 +10,8 @@
     "jade": "^1.11.0",
     "underscore": "^1.8.3",
     "unirest": "^0.4.2"
+  },
+  "engines": {
+    "iojs": "2.3.4"
   }
 }
