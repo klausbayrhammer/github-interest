@@ -27,3 +27,17 @@ body {
 .progress-bar-result {
     background-color: #6F9AD9;
 }
+
+.search-result-link {
+    color:white;
+    font-size:12pt;
+}
+
+.github-mark {
+    width:20px;
+    height:20px;
+    float:left;
+    cursor: pointer;
+    background-image: url('/images/github_mark.png');
+    margin: 0 10px 0 10px;
+}

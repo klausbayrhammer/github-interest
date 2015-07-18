@@ -21,6 +21,8 @@ html
         if content
             h1
             each val in content
+                a(href="https://github.com/#{val.name}")
+                    div(class="github-mark")
                 div(class="progress progress-striped")
                     div(class="progress-bar progress-bar-result" style="width:#{val.percent}%")
-                        a(href="/?reponame=#{val.name}" style="color:white") #{val.name} : #{val.count}
+                        a(href="/?reponame=#{val.name}" class="search-result-link") #{val.name}
