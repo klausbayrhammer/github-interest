@@ -16,14 +16,12 @@ app.get('/', (req, res) => {
     console.log(req.query);
     var reponame = req.query.reponame;
     if (reponame === undefined) {
-        console.log('No reponame defined yet');
-        res.render('index');
-    } else if((reponame.match(/\//g) || []).length !== 1) {
-        console.log('malformed github repo');
-        res.render('index', {error: 'Malformed github repo', searchterm: reponame})
+        renderStartScreen(res);
+    } else if ((reponame.match(/\//g) || []).length !== 1) {
+        renderError(res, reponame, 'Malformed github repo', reponame);
     } else {
         githubApiCall(res, reponame, 'https://api.github.com/repos/' + reponame + '/stargazers?per_page=' + pagingLimit, data => {
-            //add paging
+            console.log('remaining rate limit: ' + data.headers['x-ratelimit-remaining']);
             var promises = _.map(data.body, user => {
                     return new Promise(resolve => {
                         // add paging
@@ -47,22 +45,31 @@ app.get('/', (req, res) => {
     }
 });
 
-function githubApiCall(res,reponame, url, callback) {
+function githubApiCall(res,reponame, url, successCallback) {
     unirest.get(url)
         .headers({'User-Agent': 'Unirest Node.js'})
         .auth({user: username, pass: password, sendImmediately: true})
         .end(data => {
             if(data.status === 200) {
-                callback(data)
+                successCallback(data)
             } else if(data.status === 403) {
-                console.log('Rate Limit Reached');
-                res.render('index', {error: 'Github Api Rate Limit Reached :(', searchterm: reponame})
+                renderError(res, reponame, 'Rate Limit Reached')
+            } else if(data.status === 404) {
+                renderError(res, reponame, 'Repo ' + reponame + ' not found')
             } else {
-                console.log('Error Invoking API');
-                console.log(data);
-                res.render('index', {error: 'Error Invoking Api', searchterm: reponame})
+                renderError(res, reponame, 'Error Invoking API')
             }
         });
+}
+
+function renderStartScreen(res) {
+    console.log('No reponame defined yet');
+    res.render('index');
+}
+
+function renderError(res, searchterm, error) {
+    console.log(error);
+    res.render('index', {error: error, searchterm: searchterm})
 }
 
 var server = app.listen(process.env.PORT || 3000,() => {
