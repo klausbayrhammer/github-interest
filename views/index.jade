@@ -19,7 +19,7 @@ html
                 span(class="glyphicon glyphicon-exclamation-sign" aria-hidden="true")
                 | #{error}
         if content
-            h1
+            h3(class="result-header") People who like <i>#{searchterm}<i/> also like ...
             each val in content
                 a(href="https://github.com/#{val.name}")
                     div(class="github-mark")
